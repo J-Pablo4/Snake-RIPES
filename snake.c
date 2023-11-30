@@ -13,40 +13,32 @@ int main(void)
     clean_matrix(leds);
     paint_snake(leds, offset_v, offset_h);  
     
-    while(1)
-    {
-       do
+   do
+   {
+       values[0] = *d_pad;
+       values[1] = *(d_pad+1)+1;
+       values[2] = *(d_pad+2)+2;
+       values[3] = *(d_pad+3);
+           
+       while(values[3])
        {
            values[0] = *d_pad;
            values[1] = *(d_pad+1)+1;
            values[2] = *(d_pad+2)+2;
-           values[3] = *(d_pad+3)+3;
-           
-           while(values[3] == 4)
+               
+           clean_matrix(leds);
+           offset_h +=1;
+           offset_h %= LED_MATRIX_0_WIDTH -1;
+           paint_snake(leds, offset_v, offset_h);
+               
+           if(values[0]==1 || values[1]==2 || values[2]==3)
            {
-               values[0] = *d_pad;
-               values[1] = *(d_pad+1)+1;
-               values[2] = *(d_pad+2)+2;
-               
-               clean_matrix(leds);
-               offset_h +=1;
-               offset_h %= LED_MATRIX_0_WIDTH -1;
-               paint_snake(leds, offset_v, offset_h);
-               
-               if(values[0]==1 || values[1]==2 || values[2]==3)
-               {
-                   values[3] = 0;
-                   break;
-               }
-            }   
-           
-           
-       }while
-        
-        paint_snake(leds, offset_v, offset_h);
-    }
-    
-    return 0;
+               values[3] = 0;
+               break;
+           }
+        }   
+   }while(1);
+   return 0;
 }
 
 void clean_matrix(int *leds)
